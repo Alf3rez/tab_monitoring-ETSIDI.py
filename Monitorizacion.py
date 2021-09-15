@@ -4,21 +4,41 @@
 
 import PySimpleGUI as sg
 import psutil
-def get_cpu_usage_pct():
-return psutil.cpu_percent(interval=0.5);
-
+import time
 
 sg.theme('BrownBlue') #Para elegir el tema de la ventana
 
+
+
+    #Variables CPU
+
+CPUus = psutil.cpu_percent(interval=0.5)
+CPUfq = psutil.cpu_freq(percpu=False)
+
+    #Variables RAM
+
+RAMus = psutil.swap_memory()
+
+    #Variables GPU
+
+
+    #Variables Discos
+
+DISKus = psutil.disk_usage('/')
+
 #Pestañas
 
-tab1_layout =  [[print('CPU uso: {} %'. format(get_cpu_usage_pct()))]]
 
-tab2_layout =  [[sg.Text('RAM uso: {} %')]]
+tab1_layout =  [[sg.Text(f'CPU uso: {CPUus} %')], 
+                [sg.Text(f'CPU frecuencia: {CPUfq} %')]
+               ]
+
+tab2_layout =  [[sg.Text(f'RAM uso: {RAMus} %')]]
 
 tab3_layout =  [[sg.Text('GPU uso: {} %')]]
 
-tab4_layout =  [[sg.Text('Disco uso: {} %')]]
+tab4_layout =  [[sg.Text(f'Disco uso: {DISKus} %')]]
+
 
 #Interfaz como tal
 
@@ -35,7 +55,7 @@ while True:
     event, values =window.read()
     if event ==sg.WIN_CLOSED or event == 'Cerrar' :
         break
-
+    
 window.close(); del window
 
 #Intento de añadir un icon tray para poder minimizarla en segundo plano
